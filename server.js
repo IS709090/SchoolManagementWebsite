@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const db = require("./db/school")
-const randomize = require('randomatic');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const cookieParser = require("cookie-parser");
@@ -12,6 +11,9 @@ app.use(express.urlencoded({
 }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+    credentials: true
+}));
 app.use(express.static(__dirname + '/public'));
 /* app.use(express.static('public')); */
 const url = require('url');
@@ -139,7 +141,9 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/logout", authenticateToken, (req, res) => {
-    return res.clearCookie("access_token").status(200).redirect('/');
+    console.log("Logging out");
+    res.clearCookie("access_token");
+    return res.status(200).redirect('/');
 });
 
 
