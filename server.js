@@ -4,13 +4,14 @@ const db = require("./db/school")
 const randomize = require('randomatic');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const cookieParser = require("cookie-parser");
 require('dotenv').config();
 
 app.use(express.urlencoded({
     extended: true
 }));
 app.use(express.json());
-
+app.use(cookieParser());
 app.use(express.static(__dirname + '/public'));
 /* app.use(express.static('public')); */
 const url = require('url');
@@ -21,32 +22,36 @@ app.use(cors());
 
 //AUTH FUNCS
 
-async function authenticateToken(req, res, next) {
+const authenticateToken = (req, res, next) => {
+    const token = req.cookies.access_token;
+    if (!token) {
+        return res.sendStatus(403);
+    }
+    try {
+        const data = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        /* req.userId = data.id;
+        req.userRole = data.role; */
+        return next();
+    } catch {
+        return res.sendStatus(403);
+    }
+};
 
+
+/* async function authenticateToken(req, res, next) {
+
+    console.log("Cuenta creada con éxito!");
     const user = await db.getLoggedUsers();
     if (user.length == 0) return res.sendStatus(401);
     const token = user[0].token;
     const correo = user[0].correo;
-
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err) => {
         if (err) return res.sendStatus(403);
         next();
     });
-    /* const authHeader = req.headers['authorization'];
-    console.log(req.headers['authorization']);
-    const token = authHeader && authHeader.split(' ')[1];
-    console.log(token);
-    if (token == null) return res.sendStatus(401)
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, correo) => {
-        if (err) return res.sendStatus(403);
-        req.correo = correo;
-        next();
-    }) */
-}
 
+} */
 
-/* app.use('/tareas', authentication, usersRouter);
-app.use('/dashboard', authentication, usersRouter); */
 
 /*------------------------------------------------------------*/
 
@@ -120,13 +125,23 @@ app.post("/login", async (req, res) => {
         user[0].loggedIn = 1;
         console.log(user[0].loggedIn);
         await db.updateUser(user[0].idUsuario, user[0]);
-        res.status(200).redirect('/dashboard');
+        const token = jwt.sign(user[0].correo, process.env.ACCESS_TOKEN_SECRET);
+        return res
+            .cookie("access_token", token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+            }).status(200).redirect('/dashboard');
     } else {
         console.log("Tus datos de inicio de sesión no coinciden con los nuestros.");
         res.status(400).send('Tus datos de inicio de sesión no coinciden con los nuestros.');
     }
 
 });
+
+app.get("/logout", authenticateToken, (req, res) => {
+    return res.clearCookie("access_token").status(200).redirect('/');
+});
+
 
 
 /*------------------------------------------------------------*/

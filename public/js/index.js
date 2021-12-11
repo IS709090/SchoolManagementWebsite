@@ -105,7 +105,7 @@ function createUser() {
     console.log(url);
 
     sendHTTPRequest(url, JSON.stringify(user), HTTTPMethods.post, (data) => {
-        //window.location.replace('/consulta.html');
+        
         document.getElementById('responseSignUp').innerHTML = '<p class="text-success">Se creo una cuenta con éxito! Inicia sesión con el siguiente botón.</p>' +
             '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLogin">Log In</button>';
     }, (error) => {
