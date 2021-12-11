@@ -24,15 +24,6 @@ function getTokenValue(cname) {
 }
 
 
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires=" + d.toUTCString();
-    console.log(d);
-    console.log(expires);
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
 function sendHTTPRequest(urlAPI, data, method, cbOK, cbError, authToken) {
     // 1. Crear XMLHttpRequest object
     let xhr = new XMLHttpRequest();

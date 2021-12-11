@@ -23,6 +23,8 @@ function getTokenValue(cname) {
 }
 
 let TOKEN = getTokenValue('access_token');
+console.log(TOKEN);
+
 
 function sendHTTPRequest(urlAPI, data, method, cbOK, cbError, authToken) {
     // 1. Crear XMLHttpRequest object
@@ -50,75 +52,50 @@ function sendHTTPRequest(urlAPI, data, method, cbOK, cbError, authToken) {
     };
 }
 
-/* function login() {
-    console.log('login...');
-    let user = document.getElementById('floatingInput').value;
-    let pass = document.getElementById('floatingPassword').value;
-    let data = JSON.stringify({
-        "correo": user,
-        "password": pass
-    });
-    let url = APIURL + "/login";
-    console.log(url);
-    sendHTTPRequest(url, data, HTTTPMethods.post, (data) => {
-        document.getElementById('responseLogIn').innerHTML = '<p class="text-success">Bienvenido a tu portal escolar!</p>'
+function displayInfo() {
+
+    let url = APIURL + "/getUser";
+
+    sendHTTPRequest(url, null, HTTTPMethods.get, (data) => {
+
+
+        let info = JSON.parse(data.data);
+
+        /* LOGICA PARA DISPLAY INFO DASHBOARD ESTUDIANTE */
+
+        if (info.idUsuario == 1) {
+            document.getElementById('dashboardBienvenida').innerHTML = `<h1 class="display-4 my-2 py-2">Bienvenido ${info.nombre} ${info.apellidos}!</h1>`;
+        } else {
+
+            /* LOGICA PARA DISPLAY INFO DASHBOARD PROFESOR */
+
+            document.getElementById('dashboardBienvenida').innerHTML = `<h1 class="display-4 my-2 py-2">Bienvenido ${info.nombre} ${info.apellidos}!</h1>`;
+
+        }
+
+
+
     }, (error) => {
-        console.log('error');
-        document.getElementById('responseLogIn').innerHTML = '<p class="text-danger">' + error + '. Tus datos son incorrectos.</p>'
-    })
-} */
-
-function createUser() {
-
-    let eles = document.getElementById('modalSignup').getElementsByTagName('input');
-    let user = {};
-
-    for (let i = 0; i < eles.length; i++) {
-        if (eles[i].getAttribute('type') === 'text') {
-            user[eles[i].getAttribute('name')] = eles[i].value;
-        }
-        if (eles[i].getAttribute('type') === 'email') {
-            user[eles[i].getAttribute('name')] = eles[i].value;
-        }
-        if (eles[i].getAttribute('type') === 'password') {
-            user['password'] = eles[i].value;
-        }
-
-        if (eles[i].getAttribute('type') === 'radio') {
-            if (eles[i].checked)
-                user[eles[i].getAttribute('name')] = eles[i].value;
-        }
-    }
-
-    console.log(user);
-
-    let url = APIURL + "/createUser";
-    console.log(url);
-
-    sendHTTPRequest(url, JSON.stringify(user), HTTTPMethods.post, (data) => {
-
-        document.getElementById('responseSignUp').innerHTML = '<p class="text-success">Se creo una cuenta con éxito! Inicia sesión con el siguiente botón.</p>' +
-            '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLogin">Log In</button>';
-    }, (error) => {
-        document.getElementById('responseSignUp').innerHTML = '<p class="text-danger">' + error + '. Ya existe un usuario con ese correo.</p>';
+        document.getElementById('dashboardBienvenida').innerHTML = '<p class="text-danger">' + error + '. Ya existe un usuario con ese correo.</p>';
     }, TOKEN)
 
 }
+
 
 
 function eventsHandlers() {
     /* let addUserBtn = document.getElementById('addUserBtn');
     addUserBtn.addEventListener('click', createUser); */
 
-    let signUpForm = document.getElementById('modalSignup');
+    /*  let signUpForm = document.getElementById('modalSignup');
 
-    signUpForm.onsubmit = (e) => {
-        e.preventDefault();
-        console.log('signup!');
-        createUser(e.target);
-    };
+     signUpForm.onsubmit = (e) => {
+         e.preventDefault();
+         console.log('signup!');
+         createUser(e.target);
+     }; */
+    displayInfo();
 
-    console.log(TOKEN);
 
     /* let logInForm = document.getElementById('modalLogin');
 

@@ -15,56 +15,35 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.static(__dirname + '/public'));
-/* app.use(express.static('public')); */
 const url = require('url');
 
 app.use(cors());
 
-/*------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------------------*/
 
 //AUTH FUNCS
 
 const authenticateToken = (req, res, next) => {
-    if (!req.cookies.access_token) {
-        console.log("funciono");
+
+    const token = req.cookies.access_token;
+
+    if (!token) {
         return res.sendStatus(403);
     }
     try {
-        const token = req.cookies.access_token.token;
-        console.log(token);
-        console.log(req.cookies.access_token);
-        if (!token) {
-            return res.sendStatus(403);
-        }
-        try {
-            const data = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-            return next();
-        } catch {
-            return res.sendStatus(403);
-        }
+        const data = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+        req.correo = data;
+
+        return next();
     } catch {
         return res.sendStatus(403);
     }
 
+
 };
 
-
-/* async function authenticateToken(req, res, next) {
-
-    console.log("Cuenta creada con éxito!");
-    const user = await db.getLoggedUsers();
-    if (user.length == 0) return res.sendStatus(401);
-    const token = user[0].token;
-    const correo = user[0].correo;
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err) => {
-        if (err) return res.sendStatus(403);
-        next();
-    });
-
-} */
-
-
-/*------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------------------*/
 
 //RUTAS GET
 
@@ -93,7 +72,23 @@ app.get('/grupos', authenticateToken, (req, res) => {
     res.sendFile(__dirname + '/grupos.html');
 })
 
-/*------------------------------------------------------------*/
+
+// Mandar User INFO
+
+app.get('/getUser', authenticateToken, async (req, res) => {
+    let correo = req.correo;
+    let userInfo = await db.getUniqueUserByEmail(correo);
+    res.send({
+        idUsuario: userInfo[0].idUsuario,
+        nombre: userInfo[0].nombre,
+        apellidos: userInfo[0].apellidos,
+        correo: userInfo[0].correo,
+        password: userInfo[0].password,
+        rolUsuario: userInfo[0].rolUsuario
+    });
+})
+
+/*----------------------------------------------------------------------------------------------------------*/
 
 //RUTAS POST
 
@@ -125,18 +120,11 @@ app.post("/login", async (req, res) => {
     const user = await db.getUniqueUser(email, password);
     if (user.length == 1) {
         console.log("Datos correctos!");
-        console.log(user);
-        console.log(user[0].correo);
         await db.updateUser(user[0].idUsuario, user[0]);
         const token = jwt.sign(user[0].correo, process.env.ACCESS_TOKEN_SECRET);
-        var jsonBody = {
-            "token": token,
-            "correo": user[0].correo
-        }
 
-        console.log(jsonBody);
         return res
-            .cookie("access_token", jsonBody, {
+            .cookie("access_token", token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
             }).status(200).redirect('/dashboard');
@@ -155,12 +143,6 @@ app.get("/logout", authenticateToken, (req, res) => {
 
 
 
-/*------------------------------------------------------------*/
-
-app.get("/test", (req, res) => {
-    res.status(200).json({
-        success: true
-    });
-});
+/*----------------------------------------------------------------------------------------------------------*/
 
 app.listen(1337, () => console.log("Server is running on port 1337"));

@@ -36,7 +36,7 @@ function getUniqueUser(email, password) {
 function getUniqueUserByEmail(email) {
     return knex("usuario").where({
         correo: email
-    }).column('correo');
+    }).column('idUsuario', 'nombre', 'apellidos', 'correo', 'password', 'rolUsuario');
 }
 
 
