@@ -20,17 +20,17 @@ function getAllUsers() {
     return knex("usuario").select("nombre, apellidoPaterno, apellidoMaterno, rolUsuario");
 }
 
-function getLoggedUsers() {
+/* function getLoggedUsers() {
     return knex("usuario").where({
         loggedIn: 1
-    }).column('idUsuario', 'nombre', 'apellidos', 'correo', 'password', 'rolUsuario', 'token');
-}
+    }).column('idUsuario', 'nombre', 'apellidos', 'correo', 'password', 'rolUsuario');
+} */
 
 function getUniqueUser(email, password) {
     return knex("usuario").where({
         correo: email,
         password: password
-    }).column('idUsuario', 'nombre', 'apellidos', 'correo', 'password', 'rolUsuario', 'token');
+    }).column('idUsuario', 'nombre', 'apellidos', 'correo', 'password', 'rolUsuario');
 }
 
 function getUniqueUserByEmail(email) {
@@ -52,7 +52,6 @@ module.exports = {
     updateUser,
     getAllUsers,
     getUniqueUser,
-    getLoggedUsers,
     getUniqueUserByEmail,
     getAllStudentsGroup
 }

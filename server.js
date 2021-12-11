@@ -25,18 +25,27 @@ app.use(cors());
 //AUTH FUNCS
 
 const authenticateToken = (req, res, next) => {
-    const token = req.cookies.access_token;
-    if (!token) {
+    if (!req.cookies.access_token) {
+        console.log("funciono");
         return res.sendStatus(403);
     }
     try {
-        const data = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        /* req.userId = data.id;
-        req.userRole = data.role; */
-        return next();
+        const token = req.cookies.access_token.token;
+        console.log(token);
+        console.log(req.cookies.access_token);
+        if (!token) {
+            return res.sendStatus(403);
+        }
+        try {
+            const data = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+            return next();
+        } catch {
+            return res.sendStatus(403);
+        }
     } catch {
         return res.sendStatus(403);
     }
+
 };
 
 
@@ -94,13 +103,7 @@ app.post("/createUser", async (req, res) => {
 
     if (isUserCreated.length == 0) {
 
-        // Create token
-        var jsonBody = req.body;
-        const token = jwt.sign(req.body.correo, process.env.ACCESS_TOKEN_SECRET);
-        jsonBody.token = token;
-        jsonBody.loggedIn = 0;
-
-        const user = await db.createUser(jsonBody);
+        const user = await db.createUser(req.body);
 
         if (user.length == 1) {
             console.log("Cuenta creada con éxito!");
@@ -124,12 +127,16 @@ app.post("/login", async (req, res) => {
         console.log("Datos correctos!");
         console.log(user);
         console.log(user[0].correo);
-        user[0].loggedIn = 1;
-        console.log(user[0].loggedIn);
         await db.updateUser(user[0].idUsuario, user[0]);
         const token = jwt.sign(user[0].correo, process.env.ACCESS_TOKEN_SECRET);
+        var jsonBody = {
+            "token": token,
+            "correo": user[0].correo
+        }
+
+        console.log(jsonBody);
         return res
-            .cookie("access_token", token, {
+            .cookie("access_token", jsonBody, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
             }).status(200).redirect('/dashboard');
