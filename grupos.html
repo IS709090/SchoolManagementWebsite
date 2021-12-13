@@ -17,7 +17,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Inicio</a>
+        <a class="navbar-brand" action="/dashboard" method="GET" href="/dashboard">Inicio</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -25,13 +25,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Grupos</a>
+                    <a class="nav-link active" action="/grupos" method="GET" href="/grupos">Grupos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="tareas.html">Tareas</a>
+                    <a class="nav-link " action="/tareas" method="GET" href="/tareas">Tareas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="tareas.html">Revisiones</a>
+                    <a class="nav-link" action="/tareas" method="GET" href="/tareas">Revisiones</a>
                 </li>
 
             </ul>
@@ -42,7 +42,7 @@
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form> -->
-            <a class="btn btn-primary btn-md" href="#" role="button">Log in</a>
+            <a class="btn btn-danger btn-md" href="/logout" role="button" action="/logout" method="GET">Log Out</a>
         </div>
     </div>
 </nav>
@@ -59,15 +59,41 @@
         <hr class="my-4">
 
         <div class="row">
-            <div class="col-md-12 col-xs-12 d-flex justify-content-center">
-                <h5 class="my-1 py-1">Usted está inscrito en los siguientes grupos de trabajo. En caso de que
-                    no visualice algún grupo, favor de notificar al profesor.</h5>
+            <div class="col-md-12 col-xs-12 d-flex justify-content-center" id="gruposBienvenida">
+
             </div>
 
         </div>
 
-        <div class="row my-2">
-            <div class="col-md-4 col-xs-12 my-2 d-flex justify-content-center">
+        <div class="row my-2" id="gruposCrear">
+
+            <div class="col-md-12 col-xs-12 my-2 d-flex justify-content-center">
+
+                <div class="card d-none d-sm-block" style="width: 50%;">
+                    <div class="card-body">
+                        <h5 class="card-title">Crear Nuevo Grupo</h5>
+                        <p class="card-text">Asegurate de agregar a todos los alumnos que planeas inscribir al grupo y
+                            de llenar todos los campos necesarios.</p>
+                        <a href="#" type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#modalCrearGrupo">Crear Grupo</a>
+                    </div>
+                </div>
+
+                <div class="card d-block d-sm-none" style="width: 90%;">
+                    <div class="card-body">
+                        <h5 class="card-title">Crear Nuevo Grupo</h5>
+                        <p class="card-text">Asegurate de agregar a todos los alumnos que planeas inscribir al grupo y
+                            de llenar todos los campos necesarios.</p>
+                        <a href="#" type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#modalCrearGrupo">Crear Grupo</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- FRONT END MOSTRAR GRUPOS ESTUDIANTES -->
+
+            <!-- <div class="col-md-4 col-xs-12 my-2 d-flex justify-content-center">
                 <div class="card" style="width: 18rem;">
                     <img src="/images/grupos.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
@@ -98,10 +124,211 @@
                         <a href="#" class="btn btn-primary">Visitar Grupo</a>
                     </div>
                 </div>
+            </div> -->
+
+        </div>
+
+        <hr class="my-4">
+
+        <div class="row my-2" id="gruposMostrar">
+
+            <div class="col-md-6 col-xs-12 my-2 d-flex justify-content-center">
+
+                <div class="card d-none d-sm-block" style="width: 90%;">
+                    <div class="card-body">
+                        <h5 class="card-title">Grupo 1</h5>
+                        <p class="card-text">Descripción Grupo.</p>
+
+                        <a href="#" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#modalEditarGrupo">Editar Grupo</a>
+                        <a href="#" type="button" class="btn btn-danger" data-bs-toggle="modal"
+                            data-bs-target="#modalEliminarGrupo">Eliminar Grupo</a>
+                    </div>
+                </div>
+
+
+                <div class="card d-block d-sm-none" style="width: 90%;">
+                    <div class="card-body">
+                        <h5 class="card-title">Grupo 1</h5>
+                        <p class="card-text">Descripción Grupo.</p>
+                        <a href="#" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#modalEditarGrupo">Editar Grupo</a>
+                        <a href="#" type="button" class="btn btn-danger" data-bs-toggle="modal"
+                            data-bs-target="#modalEliminarGrupo">Eliminar Grupo</a>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="col-md-6 col-xs-12 my-2 d-flex justify-content-center">
+
+                <div class="card d-none d-sm-block" style="width: 90%;">
+                    <div class="card-body">
+                        <h5 class="card-title">Grupo 2</h5>
+                        <p class="card-text">Descripción Grupo.</p>
+                        <a href="#" class="btn btn-primary">Editar Grupo</a>
+                        <a href="#" class="btn btn-danger">Eliminar Grupo</a>
+                    </div>
+                </div>
+
+                <div class="card d-block d-sm-none" style="width: 90%;">
+                    <div class="card-body">
+                        <h5 class="card-title">Grupo 2</h5>
+                        <p class="card-text">Descripción Grupo.</p>
+                        <a href="#" class="btn btn-primary">Editar Grupo</a>
+                        <a href="#" class="btn btn-danger">Eliminar Grupo</a>
+                    </div>
+                </div>
+
             </div>
 
         </div>
 
+
+        <!-- Modal CREAR GRUPO MAESTRO-->
+        <div class="modal fade" id="modalCrearGrupo" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content rounded-5 shadow">
+                    <div class="modal-header p-5 pb-4 border-bottom-0">
+                        <!-- <h5 class="modal-title">Modal title</h5> -->
+                        <h2 class="fw-bold mb-0">Crea un Grupo</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body p-5 pt-0">
+                        <form class="">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control rounded-4" name="nombre" id="floatingNombre"
+                                    placeholder="Ivan" required>
+                                <label for="floatingInput">Nombre</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control rounded-4" name="apellidos"
+                                    id="floatingDescripcion" placeholder="Canavati López" required>
+                                <label for="floatingInput">Descripción</label>
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="rolUsuario" id="floatingEstudiante"
+                                    value="1" checked>
+                                <label class="form-check-label" for="floatingEstudiante">
+                                    Estudiante
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="rolUsuario" id="floatingProfesor"
+                                    value="2">
+                                <label class="form-check-label" for="floatingProfesor">
+                                    Profesor
+                                </label>
+                            </div>
+
+
+                            <div class="mb-3" id="responseSignUp">
+
+                            </div>
+
+
+                            <button class="w-100 mb-2 btn btn-lg rounded-4 btn-success" id="addGroupBtn">Crear
+                                Grupo</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal EDITAR GRUPO MAESTRO-->
+        <div class="modal fade" id="modalEditarGrupo" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content rounded-5 shadow">
+                    <div class="modal-header p-5 pb-4 border-bottom-0">
+                        <!-- <h5 class="modal-title">Modal title</h5> -->
+                        <h2 class="fw-bold mb-0">Editar Grupo</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body p-5 pt-0">
+                        <form class="">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control rounded-4" name="nombre" id="floatingNombre"
+                                    placeholder="Ivan" required>
+                                <label for="floatingInput">Nombre</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control rounded-4" name="apellidos"
+                                    id="floatingDescripcion" placeholder="Canavati López" required>
+                                <label for="floatingInput">Descripción</label>
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="rolUsuario" id="floatingEstudiante"
+                                    value="1" checked>
+                                <label class="form-check-label" for="floatingEstudiante">
+                                    Estudiante
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="rolUsuario" id="floatingProfesor"
+                                    value="2">
+                                <label class="form-check-label" for="floatingProfesor">
+                                    Profesor
+                                </label>
+                            </div>
+
+
+                            <div class="mb-3" id="responseSignUp">
+
+                            </div>
+
+
+                            <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" id="editGroupBtn">Editar
+                                Grupo</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal ELIMINAR GRUPO MAESTRO-->
+        <div class="modal fade" id="modalEliminarGrupo" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content rounded-5 shadow">
+                    <div class="modal-header p-5 pb-4 border-bottom-0">
+                        <!-- <h5 class="modal-title">Modal title</h5> -->
+                        <h2 class="fw-bold mb-0">Eliminar Grupo</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body p-5 pt-0">
+                        <form class="">
+
+                            <p>¿Estás seguro de querer <b>eliminar</b> este grupo?</p>
+
+                            <div class="mb-3" id="responseSignUp">
+
+                            </div>
+
+
+                            <button class="w-100 mb-2 btn btn-lg rounded-4 btn-danger" id="deleteGroupBtn">Eliminar
+                                Grupo</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -113,6 +340,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
     </script>
+    <script src="js/grupos.js"></script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
     <!--
