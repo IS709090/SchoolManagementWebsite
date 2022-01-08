@@ -442,4 +442,4 @@ app.get("/logout", authenticateToken, (req, res) => {
 
 /*----------------------------------------------------------------------------------------------------------*/
 
-app.listen(1337, () => console.log("Server is running on port 1337"));
+app.listen(process.env.PORT || 1337, () => console.log("Server is running on port 1337"));
