@@ -17,7 +17,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Inicio</a>
+        <a class="navbar-brand" action="/dashboard" method="GET" href="/dashboard">Inicio</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -25,13 +25,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link " href="grupos.html">Grupos</a>
+                    <a class="nav-link " action="/grupos" method="GET" href="/grupos">Grupos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Tareas</a>
+                    <a class="nav-link active" action="/tareas" method="GET" href="/tareas">Tareas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Revisiones</a>
+                    <a class="nav-link" action="/revisiones" method="GET" href="/revisiones">Revisiones</a>
                 </li>
 
             </ul>
@@ -42,7 +42,7 @@
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form> -->
-            <a class="btn btn-primary btn-md" href="#" role="button">Log in</a>
+            <a class="btn btn-danger btn-md" href="/logout" role="button" action="/logout" method="GET">Log Out</a>
         </div>
     </div>
 </nav>
@@ -52,87 +52,93 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12 col-xs-12 d-flex justify-content-center">
-                <h1 class="display-4 my-2 py-2">Tareas y Revisiones</h1>
+                <h1 class="display-4 my-2 py-2">Tareas</h1>
             </div>
 
         </div>
         <hr class="my-4">
 
         <div class="row">
-            <div class="col-md-12 col-xs-12 d-flex justify-content-center">
-                <h5 class="my-1 py-1">Aquí encontrarás todas las tareas y revisiones activas a realizar. No olvides
-                    dejar comentarios a las revisiones que realizes.</h5>
+            <div class="col-md-12 col-xs-12 d-flex justify-content-center" id="tareasBienvenida">
+
             </div>
+        </div>
+
+        <div class="row my-2" id="tareasCrear">
 
         </div>
 
-        <div class="row my-2">
-            <div class="col-md-4 col-xs-12 my-2 d-flex justify-content-center">
+        <hr class="my-4">
 
-                <div class="card" style="width: 25rem;">
-                    <div class="card-body">
-                        <div class="row my-2">
-                            <div class="col-md-6 col-xs-12 my-2">
-                                <h5 class="card-title fw-bold mb-3">Tarea 1</h5>
-                                <h6 class="card-subtitle mb-2">Fecha de entrega:</h6>
-                                <p class="card-text">Fecha de revisión:</p>
-                                <p class="card-text">Comentarios:</p>
+        <div class="row my-2 d-flex justify-content-center" id="tareasMostrar">
+
+        </div>
+
+        <!-- Modal CREAR TAREA MAESTRO-->
+        <div class="modal fade" id="modalCrearTarea" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content rounded-5 shadow">
+                    <div class="modal-header p-5 pb-4 border-bottom-0">
+                        <!-- <h5 class="modal-title">Modal title</h5> -->
+                        <h2 class="fw-bold mb-0">Crea una Tarea</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body p-5 pt-0">
+                        <form class="" action="/createTarea" method="POST">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control rounded-4" name="nombre" id="floatingNombre"
+                                    placeholder="Ivan" required>
+                                <label for="floatingInput">Nombre</label>
                             </div>
-                            <div class="col-md-6 col-xs-12 my-2">
 
-                                <p class="card-text">Pts:</p>
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control rounded-4" name="fechaCreacion"
+                                    id="floatingFecha" placeholder="Canavati López" required>
+                                <label for="floatingInput">Fecha de Creación</label>
                             </div>
-                        </div>
 
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control rounded-4" name="fechaLimite" id="floatingFecha"
+                                    placeholder="Canavati López" required>
+                                <label for="floatingInput">Fecha Limite</label>
+                            </div>
+
+                            <select class="form-select form-control rounded-4 mb-3" aria-label="Default select example"
+                                id="mostrarGruposProfesor" name="grupo">
+
+                            </select>
+
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control rounded-4" name="puntosMaximos"
+                                    id="floatingPuntos" placeholder="Ivan" required>
+                                <label for="floatingInput">Puntaje Máximo</label>
+                            </div>
+
+                            <div class="row visually-hidden" id="profesorNuevoGrupo">
+
+
+                            </div>
+
+                            <div class="row" id="alumnosNuevoGrupo">
+
+
+                            </div>
+
+
+                            <div class="mb-3" id="responseSignUp">
+
+                            </div>
+
+
+                            <button class="w-100 mb-2 btn btn-lg rounded-4 btn-success" id="addGroupBtn">Crear
+                                Tarea</button>
+
+                        </form>
                     </div>
                 </div>
-
             </div>
-
-            <div class="col-md-4 col-xs-12 my-2 d-flex justify-content-center">
-
-                <div class="card" style="width: 25rem;">
-                    <div class="card-body">
-                        <div class="row my-2">
-                            <div class="col-md-6 col-xs-12 my-2">
-                                <h5 class="card-title fw-bold mb-3">Tarea 2</h5>
-                                <h6 class="card-subtitle mb-2">Fecha de entrega:</h6>
-                                <p class="card-text">Fecha de revisión:</p>
-                                <p class="card-text">Comentarios:</p>
-                            </div>
-                            <div class="col-md-6 col-xs-12 my-2">
-
-                                <p class="card-text">Pts:</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col-md-4 col-xs-12 my-2 d-flex justify-content-center">
-
-                <div class="card" style="width: 25rem;">
-                    <div class="card-body">
-                        <div class="row my-2">
-                            <div class="col-md-6 col-xs-12 my-2">
-                                <h5 class="card-title fw-bold mb-3">Tarea 3</h5>
-                                <h6 class="card-subtitle mb-2">Fecha de entrega:</h6>
-                                <p class="card-text">Fecha de revisión:</p>
-                                <p class="card-text">Comentarios:</p>
-                            </div>
-                            <div class="col-md-6 col-xs-12 my-2">
-
-                                <p class="card-text">Pts:</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-
         </div>
 
 
@@ -146,6 +152,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
     </script>
+    <script src="js/tareas.js"></script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
     <!--
